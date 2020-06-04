@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:edit="http://xmlns.jcp.org/jsf/composite/components">
+    <h:head>
+        <link type="text/css" rel="stylesheet"
+              href="#{request.contextPath}/css/main.css" />
+        <f:metadata>
+            <f:viewParam name="type" value="#{userEditBean.type}"/>
+            <f:viewAction action="#{userEditBean.init(sessionBean.logged)}"/>
+        </f:metadata>
+    </h:head>
+    <h:body class="body">
+        <ui:include src="/fragments/header.xhtml"/>
+        <ui:include src="/fragments/footer.xhtml"/>
+        <h:form id="form">
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10"
+                         layout="grid" styleClass="ui-fluid">
+                <p:outputLabel value="username"/>
+                <p:inputText required="true" disabled="#{not (sessionBean.logged eq null) and not userEditBean.adminEdit()}" requiredMessage="Username požadováno" validatorMessage="username musi mit vic nez 5 znaku" value="#{userEditBean.c.username}">
+                    <f:validateLength minimum="5"/>
+                    <f:validateRegex pattern="^[A-Za-z0-9_.]+$"/>
+                </p:inputText>
+                <p:outputLabel value="password"/>
+                <p:password validatorMessage="Password musí mít minimálně 5 znaků" required="#{sessionBean.logged eq null or userEditBean.adminEdit()}" value="#{userEditBean.newPassword}" feedback="true" id="pswd" match="pswdcheck">
+                    <f:validateLength minimum="5"/>
+                </p:password>
+                <p:outputLabel value="password again"/>
+                <p:password value="#{userEditBean.newPasswordCheck}" id="pswdcheck"></p:password>
+                <p:outputLabel value="firstname"/>
+                <p:inputText required="true" value="#{userEditBean.c.first_name}"></p:inputText>
+                <p:outputLabel value="surname"/>
+                <p:inputText required="true" value="#{userEditBean.c.surname}"></p:inputText>
+                <p:outputLabel value="email"/>
+                <p:inputText required="true" value="#{userEditBean.c.email}">
+                    <f:validateRegex pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$" />
+                </p:inputText>
+                <p:outputLabel value="phone number"/>
+                <p:inputText required="true" value="#{userEditBean.c.phone_number}"></p:inputText>
+                <p:outputLabel value="birth date" />
+                <p:datePicker required="true" value="#{userEditBean.birthDate}" maxdate="#{userEditBean.today}"/>
+                <p:outputLabel value="role" rendered="#{not (sessionBean.logged eq null)}"/>
+                <p:inputText rendered="#{not (sessionBean.logged eq null) and (not userEditBean.registration)}" disabled="true" value="#{userEditBean.c.userRole.toString()}"></p:inputText>
+                <h:selectOneMenu rendered="#{not (sessionBean.logged eq null) and userEditBean.registration and sessionBean.logged.hasAdminPrivilage()}" value="#{userEditBean.userRole}">
+                    <f:selectItem itemValue="User" itemLabel="User" />
+                    <f:selectItem itemValue="Employee" itemLabel="Zaměstnanec" />
+                    <f:selectItem itemValue="Admin" itemLabel="Admin"/>
+                </h:selectOneMenu>
+                
+                <p:commandButton value="OK" action="#{userEditBean.finish()}" process="@this :form" update=":form :msgs"/>
+            </p:panelGrid>     
+            <p:panelGrid rendered="#{sessionBean.logged ne null and not userEditBean.adminEdit()}" columns="1" columnClasses="ui-grid-col-12">
+                <p:outputLabel value="Rezervace"/>
+                <p:dataTable value="#{userEditBean.c.reservationCollection}" emptyMessage="Nemáte žádné rezervace" var="r" >
+                    <p:column headerText="Od">
+                        <p:datePicker disabled="true" value="#{converterBean.getDateFromTimestamp(r.fromDateTimestamp)}"/>
+                    </p:column>
+                    <p:column headerText="Do">
+                        <p:datePicker disabled="true" value="#{converterBean.getDateFromTimestamp(r.toDateTimestamp)}"/>
+                    </p:column>
+                    <p:column headerText="Status">
+                        <p:outputLabel value="#{r.status}"/>
+                    </p:column>
+                    <p:column headerText="Cena">
+                        <p:outputLabel value="#{r.price}"/>
+                    </p:column>
+                    <p:column headerText="Motorka">
+                        <edit:motoPreview motorbike="#{r.motorbike}" onlyInfo="true"/>                    
+                    </p:column>
+                </p:dataTable>
+                
+                <p:outputLabel value="Objednávky"/>
+                <p:dataTable value="#{userEditBean.c.orderCollection}" emptyMessage="Nemáte žádné objednávky" var="o" >
+                    <p:column headerText="Datum">
+                        <p:datePicker disabled="true" value="#{converterBean.getDateFromTimestamp(o.dateTimestamp)}"/>
+                    </p:column>
+                    <p:column headerText="Price">
+                        <p:outputLabel value="#{o.price}"/>
+                    </p:column>
+                    <p:column headerText="Status">
+                        <p:outputLabel value="#{o.status}"/>
+                    </p:column>
+                    <p:column headerText="Motorka">
+                        <edit:motoPreview motorbike="#{o.motorbike}" onlyInfo="true"/>                    
+                    </p:column>
+                </p:dataTable>
+            </p:panelGrid>
+        </h:form>
+
+
+    </h:body>
+</html>
+

@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:edit="http://xmlns.jcp.org/jsf/composite/components">
+    <h:head>
+        <link type="text/css" rel="stylesheet"
+              href="#{request.contextPath}/css/main.css" />
+        <f:metadata>
+            <f:viewAction action="#{motorbikeEditBean.init()}" />
+        </f:metadata>
+    </h:head>
+    <h:body class="body">
+        <ui:include src="/fragments/header.xhtml"/>
+        <ui:include src="/fragments/footer.xhtml"/>
+        <h:form id="form">
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10"
+                         layout="grid" styleClass="ui-fluid">
+
+                <p:outputLabel value="Značka"/>
+                <p:inputText required="true" requiredMessage="Značka - povinný atribut" value="#{motorbikeEditBean.m.brand}"> </p:inputText>
+                <p:outputLabel value="Model"/>
+                <p:inputText required="true" requiredMessage="Model - povinný atribut" value="#{motorbikeEditBean.m.model}"> </p:inputText>
+                <p:outputLabel value="Kategorie"/>
+                <h:selectOneMenu value="#{motorbikeEditBean.m.category}">
+                    <f:selectItem itemValue="Skůtr" itemLabel="Skůtr" />
+                    <f:selectItem itemValue="Chopper" itemLabel="Chopper" />   
+                    <f:selectItem itemValue="Cestovní" itemLabel="Cestovní" />  
+                    <f:selectItem itemValue="Endůro" itemLabel="Endůro" />  
+                    <f:selectItem itemValue="Motokros" itemLabel="Motokros" />
+                </h:selectOneMenu>
+                <p:outputLabel value="Barva"/>
+                <p:inputText required="true" requiredMessage="Barva - povinný atribut" value="#{motorbikeEditBean.m.color}"> </p:inputText>
+                <p:outputLabel value="Palivo"/>
+                <h:selectOneMenu value="#{motorbikeEditBean.m.fuel}">
+                    <f:selectItem itemValue="Benzín" itemLabel="Benzín" />
+                    <f:selectItem itemValue="Elektřina" itemLabel="Elektřina" />    
+                </h:selectOneMenu>
+                <p:outputLabel value="Převodovka"/>
+                <h:selectOneMenu value="#{motorbikeEditBean.m.gear}">
+                    <f:selectItem itemValue="automatic" itemLabel="Automat" />
+                    <f:selectItem itemValue="manual" itemLabel="Manuál" />    
+                </h:selectOneMenu>
+                 <p:outputLabel value="Výkon"/>
+                 <p:inputNumber decimalPlaces="0" required="true" requiredMessage="Výkon - povinný atribut" value="#{motorbikeEditBean.m.maximumPower}"> </p:inputNumber>
+                 <p:outputLabel value="Cena"/>
+                 <p:inputNumber required="true" requiredMessage="Cena - povinný atribut" value="#{motorbikeEditBean.m.price}"> </p:inputNumber>
+                
+                
+                <p:commandButton value="OK" action="#{motorbikeEditBean.finish()}" process="@this :form" update=":form :msgs"/>
+            </p:panelGrid>            
+        </h:form>
+
+
+    </h:body>
+</html>

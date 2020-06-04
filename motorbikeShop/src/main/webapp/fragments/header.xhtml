@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:edit="http://xmlns.jcp.org/jsf/composite/components">
+    <h:head>
+        <link type="text/css" rel="stylesheet"
+              href="#{request.contextPath}/css/main.css" />
+        <title>Motorbike shop</title>
+
+    </h:head>
+    <h:body>
+        <p:growl id="msgs"  showDetail="true"/>
+        <h:form id="menuForm">
+            <p:menubar id="menu">
+                 <p:menuitem value="Všechny" url="#{request.contextPath}/shop/pages/main.xhtml" >
+                </p:menuitem>
+                <p:menuitem value="Skůtr" url="#{request.contextPath}/shop/pages/main.xhtml">
+                    <f:param name="type" value="scooter"/>
+                </p:menuitem>
+                <p:menuitem value="Chopper" url="#{request.contextPath}/shop/pages/main.xhtml">
+                    <f:param name="type" value="chopper"/>
+                </p:menuitem>
+                <p:menuitem value="Cestovní" url="#{request.contextPath}/shop/pages/main.xhtml">
+                    <f:param name="type" value="travel"/>
+                </p:menuitem>
+                <p:menuitem value="Endůro" url="#{request.contextPath}/shop/pages/main.xhtml">
+                    <f:param name="type" value="enduro"/>
+                </p:menuitem>
+                <p:menuitem value="Motocross" url="#{request.contextPath}/shop/pages/main.xhtml">
+                    <f:param name="type" value="motocross"/>
+                </p:menuitem>
+                <p:menuitem value="Kontakt"/>
+                <p:menuitem value="Create motorbike" url="#{request.contextPath}/shop/pages/employee/motorbikeEdit.xhtml" />
+                <p:menuitem value="Create user" rendered="#{sessionBean.logged ne null and sessionBean.logged.hasAdminPrivilage()}" url="#{request.contextPath}/shop/pages/edituser.xhtml">
+                    <f:param name="type" value="adminEdit"/>
+                </p:menuitem>
+                <f:facet name="options">
+                    <p:linkButton type="button" value="Login" styleClass="margin-3" outcome="/shop/login.xhtml" rendered="#{sessionBean.getUser() eq null}"/>
+                    <p:linkButton type="button" value="Register" styleClass="margin-3" outcome="/shop/pages/edituser.xhtml" rendered="#{sessionBean.getUser() eq null}"/>
+                    <p:linkButton type="button" value="#{sessionBean.logged.username}" styleClass="margin-3" outcome="/shop/pages/edituser.xhtml" rendered="#{not (sessionBean.getUser() eq null)}">
+                    </p:linkButton>
+                    <p:commandLink type="button" value="Log Out" oncomplete="location.reload();" style="padding: 4px" action="#{applicationBean.logout()}"  styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only margin-3" rendered="#{not (sessionBean.getUser() eq null)}">
+                    </p:commandLink>
+                </f:facet>
+            </p:menubar>
+        </h:form>
+    </h:body>
+</html>
