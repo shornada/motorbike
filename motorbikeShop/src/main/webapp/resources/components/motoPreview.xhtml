@@ -43,6 +43,7 @@ and open the template in the editor.
                 <h:panelGrid columns="1">
                     <p:commandButton value="Rezervovat motorku" onclick="PF('resDialog').show();" rendered="#{sessionBean.logged ne null}"/>
                     <p:commandButton action="#{motoPreviewBean.initUsers()}" value="Objednat motorku" onclick="PF('orderDialog').show();" rendered="#{sessionBean.logged ne null and sessionBean.logged.hasEmployeePrivilage()}"/>
+                    <p:commandButton value="Smazat motorku" onclick="PF('delDialog').show();" rendered="#{sessionBean.logged ne null and sessionBean.logged.hasAdminPrivilage()}"/>
                 </h:panelGrid>
 
             </h:form>
@@ -59,6 +60,12 @@ and open the template in the editor.
                     <p:autoComplete required="true" requiredMessage="Username je požadováno" value="#{motoPreviewBean.username}" completeMethod="#{motoPreviewBean.getUsernamesAutocomplete}" />
                     <p:commandButton value="Potvrdit" action="#{motoPreviewBean.orderMotorbike(cc.attrs.motorbike)}" process="usernameForm" oncomplete="PF('orderDialog').hide();" update="usernameForm :msgs"/>
                     <p:commandButton value="zrušit" onclick="PF('orderDialog').hide();"/>
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Opravdu smazat?" widgetVar="delDialog" rendered="#{sessionBean.logged ne null and sessionBean.logged.hasAdminPrivilage()}" minHeight="200">
+                <h:form id="delForm">
+                    <p:commandButton value="Potvrdit" process="delForm" oncomplete="PF('delDialog').hide();" update="delForm :msgs" action="#{motoPreviewBean.deleteMotorbike(cc.attrs.motorbike)}"/>
+                    <p:commandButton value="zrušit" onclick="PF('delDialog').hide();"/>
                 </h:form>
             </p:dialog>
         </h:panelGroup>

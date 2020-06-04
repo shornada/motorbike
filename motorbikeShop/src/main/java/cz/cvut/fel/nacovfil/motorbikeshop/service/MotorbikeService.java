@@ -18,6 +18,7 @@ import cz.cvut.fel.nacovfil.motorbikeshop.model.ReservationStatus;
 import cz.cvut.fel.nacovfil.motorbikeshop.service.utils.LoggingInterceptor;
 import cz.cvut.fel.nacovfil.motorbikeshop.service.utils.MotorbikeCache;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.PostConstruct;
@@ -58,7 +59,7 @@ public class MotorbikeService extends AbstractServices {
     public List<Motorbike> findAll() {
         return dao.findAll();
     }
-
+    
     public MotorbikeService() {
         this.dao = new MotorbikeDao();
     }
@@ -94,7 +95,6 @@ public class MotorbikeService extends AbstractServices {
     
     public void makeMotorbikeOrder(Motorbike motorbike, Order order, Client c) {
         if (motorbike != null && order != null && c != null) {
-            motorbike.setStatus(MotorbikeStatus.RESERVED.toString());
             motorbike.getOrderCollection().add(order);
             order.setMotorbike(motorbike);
             c.getOrderCollection().add(order);

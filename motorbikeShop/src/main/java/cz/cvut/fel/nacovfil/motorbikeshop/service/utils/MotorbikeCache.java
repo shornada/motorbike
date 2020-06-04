@@ -6,6 +6,7 @@
 package cz.cvut.fel.nacovfil.motorbikeshop.service.utils;
 
 import cz.cvut.fel.nacovfil.motorbikeshop.model.Motorbike;
+import cz.cvut.fel.nacovfil.motorbikeshop.model.MotorbikeStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public class MotorbikeCache {
     public List<Motorbike> getAll() {
         return new ArrayList(cache.values());
     }
-    
+       
     public List<Motorbike> getAll(String type) {
         return filterByType(type);
     }

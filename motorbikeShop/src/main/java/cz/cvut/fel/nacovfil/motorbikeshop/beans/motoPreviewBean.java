@@ -7,6 +7,7 @@ package cz.cvut.fel.nacovfil.motorbikeshop.beans;
 
 import cz.cvut.fel.nacovfil.motorbikeshop.model.Client;
 import cz.cvut.fel.nacovfil.motorbikeshop.model.Motorbike;
+import cz.cvut.fel.nacovfil.motorbikeshop.model.MotorbikeStatus;
 import cz.cvut.fel.nacovfil.motorbikeshop.model.Order;
 import cz.cvut.fel.nacovfil.motorbikeshop.model.Reservation;
 import cz.cvut.fel.nacovfil.motorbikeshop.service.MotorbikeService;
@@ -102,6 +103,21 @@ public class motoPreviewBean extends Connection implements Serializable {
             return;
         }
         FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Při objednávce došlo k chybě", null);
+        fc.addMessage(null, fm);
+    }
+    
+    public void deleteMotorbike(Motorbike m) {
+        if (m != null) {
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.getExternalContext().getFlash().setKeepMessages(true);
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Motocykl byl odstraněn", null);
+            fc.addMessage(null, fm);
+            motorbikeService.makeMotorbikeSold(m);
+            return;
+        }
+        FacesContext fc = FacesContext.getCurrentInstance();
+        fc.getExternalContext().getFlash().setKeepMessages(true);
+        FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Při odstranění došlo k chybě", null);
         fc.addMessage(null, fm);
     }
 
